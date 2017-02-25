@@ -6,35 +6,35 @@ angular.module('starter.controllers', [])
   };
 
 
-songAPIservice.getSongs().success(function(data){
+  songAPIservice.getSongs().success(function(data){
       $scope.getfavs();
       $scope.songs = data ;
 
 
     });
-$scope.toggleSelect = function(letter) {
+    $scope.toggleSelect = function(letter) {
    if ($scope.isLetterShown(letter)) {
      $scope.shownLetter = null;
    } else {
      $scope.shownLetter = letter;
    }
  };
- $scope.isLetterShown = function(letter) {
+  $scope.isLetterShown = function(letter) {
    return $scope.shownLetter === letter;
  };
- $scope.isSongLiked = function(song){
+  $scope.isSongLiked = function(song){
    return FavouritesService.find(song);
  };
 
 
- $scope.addToFavs = function (song) {
+  $scope.addToFavs = function (song) {
    $scope.isSongLiked(song) ?   FavouritesService.remove(song): FavouritesService.add(song);
    $scope.getfavs();
 
 
  };
 
- $ionicPopover.fromTemplateUrl('templates/options-popover.html', {
+  $ionicPopover.fromTemplateUrl('templates/options-popover.html', {
     scope: $scope
   }).then(function(popover) {
     $scope.popover = popover;
@@ -43,11 +43,11 @@ $scope.toggleSelect = function(letter) {
    $scope.showOptions = function($event){
      $scope.popover.show($event);
  };
- $scope.$on('$destroy', function() {
+  $scope.$on('$destroy', function() {
     $scope.popover.remove();
   });
 
-$scope.showAbout = function() {
+  $scope.showAbout = function() {
     $scope.popover.hide();
     var aboutPopup = $ionicPopup.alert({
       title: 'About',
@@ -59,14 +59,14 @@ $scope.showAbout = function() {
 
 
 };
-$scope.showCredits = function() {
-  $scope.popover.hide();
-  var alertPopup = $ionicPopup.alert({
+    $scope.showCredits = function() {
+      $scope.popover.hide();
+      var alertPopup = $ionicPopup.alert({
     title: 'Credits',
     templateUrl: 'templates/credits-popup.html',
       cssClass: 'mypopup'
   });
-  ClosePopupService.register(alertPopup);
+      ClosePopupService.register(alertPopup);
 
 
 };
@@ -87,20 +87,7 @@ $scope.showCredits = function() {
         return out;
     }
 })
-.controller('FavCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
 
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
-})
 
 
 // .controller('SongCtrl', function($scope, $stateParams, Chats) {
@@ -117,8 +104,47 @@ $scope.showCredits = function() {
     });
 
 })
-.controller('ReadingCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('VersesCtrl', function($scope,$stateParams, songAPIservice) {
+  songAPIservice.getReading().success(function(data){
+      $scope.readings = data ;
+      var date= $stateParams.date;
+      $scope.month = date.substring(0 ,date.length-1);
+
+      $scope.week = date.substr(-1) ;
+      $scope.weekreading = data[$scope.month][$scope.week-1];
+    });
+  $scope.monthIndex =  function(month){
+
+      return Object.keys($scope.readings).indexOf(month)+1 ;
+  }
+  $scope.weekIndex = function(month ,week){
+    return $scope.readings[month].indexOf(week)+1;
+  }
+})
+.controller('ReadingCtrl', function($scope,$stateParams, songAPIservice) {
+  songAPIservice.getReading().success(function(data){
+      $scope.readings = data ;
+    });
+  $scope.monthIndex =  function(month){
+
+      return Object.keys($scope.readings).indexOf(month)+1 ;
+  }
+  $scope.weekIndex = function(month ,week){
+    return $scope.readings[month].indexOf(week)+1;
+  }
 });
+// .controller('VersesCtrl', function($scope,$stateParams, songAPIservice) {
+//   songAPIservice.getReading().success(function(data){
+//       $scope.readings = data ;
+//       $scope.month = $stateParams.month ;
+//       $scope.week = $stateParams.week ;
+//       $scope.weekreading = data[$scope.month][$scope.week-1];
+//     });
+//   $scope.monthIndex =  function(month){
+//
+//       return Object.keys($scope.readings).indexOf(month)+1 ;
+//   }
+//   $scope.weekIndex = function(month ,week){
+//     return $scope.readings[month].indexOf(week)+1;
+//   }
+// })

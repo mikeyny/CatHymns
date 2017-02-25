@@ -5,6 +5,9 @@ angular.module('starter.services', [])
     songAPI.getSongs = function(){
       return $http.get("json/hymns.json");
     };
+    songAPI.getReading = function(){
+      return $http.get("json/reading.json");
+    };
 
     return songAPI;
   }])

@@ -59,24 +59,18 @@ angular.module('starter', ['ionic','ngStorage', 'starter.controllers', 'starter.
         }
       }
     })
-    // .state('tab.song', {
-    //   url: '/song/:chatId',
-    //   views: {
-    //     'tab-reading': {
-    //       templateUrl: 'templates/song.html',
-    //       controller: 'SongCtrl'
-    //     }
-    //   }
-    // })
+
     .state('tab.song', {
       url: '/song/:title',
       views: {
         'tab-home': {
-          templateUrl: 'templates/song2.html',
+          templateUrl: 'templates/song.html',
           controller: 'SongCtrl'
         }
       }
     })
+
+
   .state('tab.reading', {
     url: '/reading',
     views: {
@@ -85,7 +79,17 @@ angular.module('starter', ['ionic','ngStorage', 'starter.controllers', 'starter.
         controller: 'ReadingCtrl'
       }
     }
+  })
+  .state('tab.read', {
+    url: '/read/:date',
+    views: {
+      'tab-reading': {
+        templateUrl: 'templates/reading.html',
+        controller: 'VersesCtrl'
+      }
+    }
   });
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');
