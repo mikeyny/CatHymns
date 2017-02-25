@@ -80,8 +80,9 @@ angular.module('starter', ['ionic','ngStorage', 'starter.controllers', 'starter.
       }
     }
   })
+
   .state('tab.read', {
-    url: '/read/:date',
+    url: '/read/:id',
     views: {
       'tab-reading': {
         templateUrl: 'templates/reading.html',

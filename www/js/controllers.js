@@ -107,7 +107,7 @@ angular.module('starter.controllers', [])
 .controller('VersesCtrl', function($scope,$stateParams, songAPIservice) {
   songAPIservice.getReading().success(function(data){
       $scope.readings = data ;
-      var date= $stateParams.date;
+      var date= $stateParams.id;
       $scope.month = date.substring(0 ,date.length-1);
 
       $scope.week = date.substr(-1) ;

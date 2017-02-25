@@ -2,7 +2,7 @@
   <ion-content>
     <div class="card" ng-repeat="(month,list) in readings">
       <div class="item item-divider" ng-class="monthIndex(month)%3==0 ? 'item-balanced' : monthIndex(month)%2==0 ? 'item-positive':'item-calm'">{{month}}</div>
-      <div class="item item-divider" ng-repeat="week in list" ><a href="#/read/{{month+weekIndex(month,week)}}">Week {{weekIndex(month,week)}}</a> </div>
+      <div class="item item-divider" ng-repeat="week in list" ><a ng-href="#/tab/read/{{month+weekIndex(month,week)}}">Week {{weekIndex(month,week)}}</a> </div>
 
     </div>
   </ion-content>
