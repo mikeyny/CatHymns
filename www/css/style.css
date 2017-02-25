@@ -1,0 +1,16 @@
+/* Empty. Add your own CSS if you like */
+
+
+
+.songtitle{
+  text-align: center;
+  text-decoration: underline;
+  font-weight: bold;
+}
+.clrgrey{
+  color: #757575;
+}
+
+.mypopup .button {
+  display: none;
+}

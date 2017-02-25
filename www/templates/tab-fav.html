@@ -1,0 +1,10 @@
+<ion-view view-title="Favourites">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-icon-left " ng-repeat="song in favourites" type="item-text-wrap" href="#/tab/song/{{song.title}}">
+          <i class="icon ion-ios-musical-notes calm"></i>
+        {{song.title}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,42 @@
+<ion-view view-title="CathHymns">
+  <ion-nav-buttons side="right">
+    <button class="button" ng-click="showOptions($event)">
+      <i class="ion-android-more-vertical"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="padding">
+    <!-- <ion-item class="item-remove-animate item-icon-right" ng-repeat="letter in alphabet" type="item-text-wrap" href="#/tab/song/{{chat.id}}">
+      {{letter}}
+    </ion-item> -->
+
+    <ion-list>
+            <div ng-repeat="(letter,list) in songs ">
+              <ion-item class="item-stable item-icon-left item-icon-right"  ng-click="toggleSelect(letter)" ng-class="{active: isLetterShown(letter)}">
+                <i class="icon ion-ios-musical-notes calm"></i>
+                  &nbsp
+                 {{   letter  }}
+                 <i class="icon clrgrey" ng-class="isLetterShown(letter) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+              </ion-item>
+              <ion-item class="item-accordion item-icon-right" ng-repeat="song in list " ng-show="isLetterShown(letter)" href="#/tab/song/{{song.title}}">
+                <!-- <i class="icon ion-android-star-outline" ></i> -->
+                <!-- <i  ng-class="isSongLiked(song) ? 'icon ion-ios7-heart':'icon ion-ios7-heart-outline'" ></i> -->
+
+                {{song.title}}
+                <a href="#">
+                  <i ng-class="isSongLiked(song) ? 'icon ion-ios-star' : 'icon ion-ios-star-outline'" ng-click="addToFavs(song)"></i>
+                </a>
+
+
+              </ion-item>
+            </div>
+    </ion-list>
+    <!-- <ion-list>
+
+              <ion-item class="item-stable" ng-repeat="song in songs | firstLetter:'title':'A' ">
+                {{song.title}}
+              </ion-item>
+
+    </ion-list> -->
+
+  </ion-content>
+</ion-view>
