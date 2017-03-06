@@ -1,7 +1,7 @@
 {
-  "name": "tabsapp",
+  "name": "CatHymns",
   "version": "1.1.1",
-  "description": "tabsApp: An Ionic project",
+  "description": "CatHymns: A shona catholic hymn book",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
