@@ -14,3 +14,11 @@
 .mypopup .button {
   display: none;
 }
+
+.spinner svg {
+  position: relative;
+  left: 40%;
+  top: 40%;
+  width: 19% !important;
+  height: 85px !important;
+}

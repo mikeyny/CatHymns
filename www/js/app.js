@@ -30,6 +30,12 @@ angular.module('starter', ['ionic','ngStorage', 'starter.controllers', 'starter.
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
+// state for search
+  .state('search', {
+  url: '/search',
+  templateUrl: 'templates/search.html',
+  controller:'searchCtrl'
+})
 
   // setup an abstract state for the tabs directive
     .state('tab', {

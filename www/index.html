@@ -36,15 +36,30 @@
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
   </head>
-  <body ng-app="starter">
+  <body ng-app="starter" ng-controller="aboutCtrl">
     <!--
       The nav bar that will be updated as we navigate between views.
     -->
-    <ion-nav-bar class="bar-positive item-icon-left">
+    <ion-nav-bar class="bar-positive item-icon-left item-icon-right">
+
+      <ion-nav-buttons side="primary" >
+        <a href="#/search">
+          <button class="button" ng-href="#/search">
+            <i class="ion-ios-search-strong" ng-href="#/search"></i>
+          </button>
+        </a>
+
+        <button class="button" ng-click="showOptions($event)">
+          <i class="ion-android-more-vertical"></i>
+        </button>
+      </ion-nav-buttons>
 
       <ion-nav-back-button class="button-clear">
         <i class="ion-arrow-left-c"></i>
       </ion-nav-back-button>
+
+
+
 
 
     </ion-nav-bar>

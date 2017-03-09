@@ -1,14 +1,10 @@
 <ion-view view-title="CathHymns">
-  <ion-nav-buttons side="right">
-    <button class="button" ng-click="showOptions($event)">
-      <i class="ion-android-more-vertical"></i>
-    </button>
-  </ion-nav-buttons>
+
   <ion-content class="padding">
     <!-- <ion-item class="item-remove-animate item-icon-right" ng-repeat="letter in alphabet" type="item-text-wrap" href="#/tab/song/{{chat.id}}">
       {{letter}}
     </ion-item> -->
-
+    <ion-spinner  class="spinner-calm" ng-show="loading"></ion-spinner>
     <ion-list>
             <div ng-repeat="(letter,list) in songs ">
               <ion-item class="item-stable item-icon-left item-icon-right"  ng-click="toggleSelect(letter)" ng-class="{active: isLetterShown(letter)}">

@@ -1,17 +1,22 @@
 angular.module('starter.controllers', [])
 
-.controller('HomeCtrl', function($scope, songAPIservice ,FavouritesService ,$ionicPopover ,$ionicPopup, $timeout ,ClosePopupService) {
+.controller('HomeCtrl', function($scope, songAPIservice , $timeout, FavouritesService ) {
   $scope.getfavs = function(){
     $scope.favourites = FavouritesService.getAll();
   };
 
+   $scope.loading = true;
+   $scope.getSongs = function(){
+     songAPIservice.getSongs().success(function(data){
+         $scope.getfavs();
+         $scope.songs = data ;
+         $timeout(function(){
+           $scope.loading = false;
+         }, 5000);
+       });
+   }
+   $scope.getSongs();
 
-  songAPIservice.getSongs().success(function(data){
-      $scope.getfavs();
-      $scope.songs = data ;
-
-
-    });
     $scope.toggleSelect = function(letter) {
    if ($scope.isLetterShown(letter)) {
      $scope.shownLetter = null;
@@ -32,15 +37,22 @@ angular.module('starter.controllers', [])
    $scope.getfavs();
 
 
+
  };
 
+
+
+})
+
+.controller('aboutCtrl', function($scope,$ionicPopover ,$ionicPopup, $timeout ,ClosePopupService) {
+  console.log("works");
   $ionicPopover.fromTemplateUrl('templates/options-popover.html', {
     scope: $scope
   }).then(function(popover) {
     $scope.popover = popover;
   });
-
    $scope.showOptions = function($event){
+     console.log("clicked");
      $scope.popover.show($event);
  };
   $scope.$on('$destroy', function() {
@@ -70,7 +82,17 @@ angular.module('starter.controllers', [])
 
 
 };
+$scope.selectLang = function() {
+  $scope.popover.hide();
+  var langPopup = $ionicPopup.alert({
+title: 'Select Language',
+templateUrl: 'templates/lang-popup.html'
+});
+  ClosePopupService.register(langPopup);
 
+
+
+};
 
 })
 .filter('firstLetter', function () {
@@ -132,19 +154,30 @@ angular.module('starter.controllers', [])
   $scope.weekIndex = function(month ,week){
     return $scope.readings[month].indexOf(week)+1;
   }
+})
+.controller('searchCtrl', function($scope, songAPIservice ,FavouritesService ) {
+  $scope.getfavs = function(){
+    $scope.favourites = FavouritesService.getAll();
+  };
+
+
+  songAPIservice.getSearchableSongs().success(function(data){
+      $scope.getfavs();
+      $scope.hymns = data ;
+
+
+    });
+  $scope.isSongLiked = function(song){
+   return FavouritesService.find(song);
+ };
+
+
+  $scope.addToFavs = function (song) {
+   $scope.isSongLiked(song) ?   FavouritesService.remove(song): FavouritesService.add(song);
+   $scope.getfavs();
+ };
+
+$scope.searchText = "";
+
+
 });
-// .controller('VersesCtrl', function($scope,$stateParams, songAPIservice) {
-//   songAPIservice.getReading().success(function(data){
-//       $scope.readings = data ;
-//       $scope.month = $stateParams.month ;
-//       $scope.week = $stateParams.week ;
-//       $scope.weekreading = data[$scope.month][$scope.week-1];
-//     });
-//   $scope.monthIndex =  function(month){
-//
-//       return Object.keys($scope.readings).indexOf(month)+1 ;
-//   }
-//   $scope.weekIndex = function(month ,week){
-//     return $scope.readings[month].indexOf(week)+1;
-//   }
-// })
