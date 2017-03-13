@@ -22,3 +22,7 @@
   width: 19% !important;
   height: 85px !important;
 }
+pre{
+  font-family: "Roboto";
+  font-weight: 400;
+}

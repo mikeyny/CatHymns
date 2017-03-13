@@ -2,8 +2,11 @@ angular.module('starter.services', [])
 
 .factory('songAPIservice',['$http', function($http){
     var songAPI ={};
-    songAPI.getSongs = function(){
-      return $http.get("json/hymns.json");
+    songAPI.getSongs = function(lang){
+      if (lang =="Shona"){
+      return $http.get("json/hymns.json");}
+    else{
+      return $http.get("json/ndebelehymns.json");}
     };
     songAPI.getReading = function(){
       return $http.get("json/reading.json");
@@ -27,12 +30,27 @@ angular.module('starter.services', [])
           storage.favourites.push(song);
         };
         favAPI.find = function(song){
-          return storage.favourites.filter((item)=>item.aurthor==song.aurthor).length>0;
+          return storage.favourites.filter((item)=>(item.aurthor==song.aurthor && item.title==song.title)).length>0;
         };
         favAPI.remove = function (song) {
-          storage.favourites.splice(storage.favourites.indexOf(song), 1);
+          storage.favourites.splice(storage.favourites.indexOf(storage.favourites.filter((item)=>(item.aurthor==song.aurthor && item.title==song.title))[0]), 1);
         };
         return favAPI ;
+
+
+  }])
+  .factory ('LanguageService',['$localStorage', function ($localStorage) {
+    var storage = $localStorage.$default({
+        language: ["Shona"]  });
+        var langAPI={};
+        langAPI.getlang = function () {
+          return storage.language[0];
+        };
+        langAPI.setlang = function (lang) {
+          storage.language[0]= lang ;
+        };
+
+        return langAPI ;
 
 
   }])

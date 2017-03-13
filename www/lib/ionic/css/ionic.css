@@ -3118,8 +3118,10 @@ code,
 kbd,
 pre,
 samp {
-  font-size: 1em;
-  font-family: monospace, serif; }
+  font-size: 1.1em;
+  font-family: "Roboto";
+  font-style: italic;
+ }
 
 /**
  * Improve readability of pre-formatted text in all browsers.
