@@ -4,51 +4,40 @@ angular.module('starter.controllers', [])
   $scope.getfavs = function(){
     $scope.favourites = FavouritesService.getAll();
   };
-    $scope.lang = "ndebele";
-   $scope.loading = true;
-   $rootScope.$on("UpdateSongs", function(){
+  $scope.loading = true;
+  $rootScope.$on("UpdateSongs", function(){
         $scope.getSongs();
         console.log("updated")
        });
+  $scope.getSongs = function() {
+        $scope.getfavs();
+        $scope.songs = songAPIservice.getSongs(LanguageService.getlang()) ;
 
-       $scope.getSongs = function() {
-         songAPIservice.getSongs(LanguageService.getlang()).success(function(data){
-                  $scope.getfavs();
-                  $scope.songs = data ;
-                  $timeout(function(){
-                    $scope.loading = false;
-                  }, 5000);
-           });
        };
+  $rootScope.$on('loading:finish', function (){
+    $scope.getSongs();
+    $timeout(function(){
+               $scope.loading = false;
+             }, 5000);
+  });
 
-       $scope.getSongs();
 
-
-
-    $scope.toggleSelect = function(letter) {
-   if ($scope.isLetterShown(letter)) {
-     $scope.shownLetter = null;
-   } else {
-     $scope.shownLetter = letter;
-   }
- };
+  $scope.toggleSelect = function(letter) {
+    $scope.shownLetter = ($scope.isLetterShown(letter)) ? null:letter ;
+    };
   $scope.isLetterShown = function(letter) {
-   return $scope.shownLetter === letter;
- };
+    return $scope.shownLetter === letter;
+  };
   $scope.isSongLiked = function(song){
    return FavouritesService.find(song);
- };
-
-
+  };
   $scope.addToFavs = function (song) {
    $scope.isSongLiked(song) ?   FavouritesService.remove(song): FavouritesService.add(song);
    $scope.getfavs();
- };
+  };
 })
 
 .controller('aboutCtrl', function($scope, $rootScope ,$ionicPopover ,$ionicPopup, $timeout ,ClosePopupService , LanguageService) {
-
-
   $ionicPopover.fromTemplateUrl('templates/options-popover.html', {
       scope: $scope
     }).then(function(popover) {
@@ -61,8 +50,7 @@ angular.module('starter.controllers', [])
     $scope.$on('$destroy', function() {
       $scope.popover.remove();
   });
-
-    $scope.showAbout = function() {
+  $scope.showAbout = function() {
       $scope.popover.hide();
       var aboutPopup = $ionicPopup.alert({
         title: 'About',
@@ -74,7 +62,7 @@ angular.module('starter.controllers', [])
 
 
     } ;
-    $scope.showCredits = function() {
+  $scope.showCredits = function() {
       $scope.popover.hide();
       var alertPopup = $ionicPopup.alert({
         title: 'Credits',
@@ -83,7 +71,7 @@ angular.module('starter.controllers', [])
       });
         ClosePopupService.register(alertPopup);
       };
-    $scope.selectLang = function() {
+  $scope.selectLang = function() {
       $scope.popover.hide();
       var langPopup = $ionicPopup.alert({
         title: 'Select Language',
@@ -101,26 +89,27 @@ angular.module('starter.controllers', [])
 
       })
       ClosePopupService.register(langPopup);
-};
+      };
 
 })
 
 .controller('SongCtrl', function($scope,$rootScope , $stateParams, songAPIservice ,LanguageService) {
   $rootScope.$on("UpdateSongs", function(){
        $scope.changeSongs();
-       console.log("yep")
+
       });
   $scope.changeSongs = function(){
-    songAPIservice.getSongs(LanguageService.getlang()).success(function(data){
+
+        var data =   songAPIservice.getSongs(LanguageService.getlang()) ;
         $scope.title = $stateParams.title ;
         console.log($scope.title);
         var songs = data[$scope.title[0].toUpperCase()] ;
         $scope.song = songs.filter(item=>item.title==$scope.title)[0] ;
           console.log($scope.song);
 
-      });
+
   }
-$scope.changeSongs();
+  $scope.changeSongs();
 
 })
 .controller('VersesCtrl', function($scope,$stateParams, songAPIservice) {
@@ -152,17 +141,20 @@ $scope.changeSongs();
     return $scope.readings[month].indexOf(week)+1;
   }
 })
-.controller('searchCtrl', function($scope, songAPIservice ,FavouritesService ) {
+.controller('searchCtrl', function($scope, songAPIservice ,FavouritesService , LanguageService , $rootScope) {
+    $scope.loading = true;
+    $scope.getSearchableSongs = function(){
+      songAPIservice.getSearchableSongs(LanguageService.getlang()).success(function(data){
+          $scope.hymns = data ;
+            $scope.loading = false;
 
-
-
-  songAPIservice.getSearchableSongs().success(function(data){
-      $scope.hymns = data ;
-
-
-    });
-
-
+        });
+    }
+    $scope.getSearchableSongs();
+    $rootScope.$on("UpdateSongs", function(){
+          $scope.getSearchableSongs();
+          console.log("updated")
+         });
   $scope.searchText = "";
 
 

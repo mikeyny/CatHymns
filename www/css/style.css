@@ -26,3 +26,12 @@ pre{
   font-family: "Roboto";
   font-weight: 400;
 }
+.medium{
+  width: 35px;
+  height: auto;
+}
+.popup{
+  background-image: url("../img/bg.jpg");
+  background-size: 250px 180px;
+  background-repeat: no-repeat;
+}

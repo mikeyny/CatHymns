@@ -2,17 +2,20 @@ angular.module('starter.services', [])
 
 .factory('songAPIservice',['$http', function($http){
     var songAPI ={};
+    var songs ={};
+    var loaded = false;
+    $http.get("json/hymns.json").success(function(data){
+          songs.shona = data ;}) ;
+    $http.get("json/ndebelehymns.json").success(function(data){
+              songs.ndebele = data ;}) ;
     songAPI.getSongs = function(lang){
-      if (lang =="Shona"){
-      return $http.get("json/hymns.json");}
-    else{
-      return $http.get("json/ndebelehymns.json");}
+      return (lang =="Shona") ? songs.shona:songs.ndebele;
     };
     songAPI.getReading = function(){
       return $http.get("json/reading.json");
     };
-    songAPI.getSearchableSongs = function(){
-      return $http.get("json/searchable.json");
+    songAPI.getSearchableSongs = function(lang){
+      return (lang =="Shona") ? $http.get("json/searchable.json"):$http.get("json/ndebelesearchable.json");
     };
 
     return songAPI;
@@ -54,6 +57,28 @@ angular.module('starter.services', [])
 
 
   }])
+
+.factory('httpInterceptor', function ($q, $rootScope) {
+          var loadingCount = 0;
+
+          return {
+              request: function (config) {
+                  if(++loadingCount === 1) $rootScope.$broadcast('loading:progress');
+                  return config || $q.when(config);
+              },
+
+              response: function (response) {
+                  if(--loadingCount === 0) $rootScope.$broadcast('loading:finish');
+                  return response || $q.when(response);
+              },
+
+              responseError: function (response) {
+                  if(--loadingCount === 0) $rootScope.$broadcast('loading:finish');
+                  return $q.reject(response);
+              }
+          };
+      })
+
   .factory('ClosePopupService', function($document, $ionicPopup, $timeout){
   var lastPopup;
   return {
@@ -86,17 +111,3 @@ angular.module('starter.services', [])
     }
   };
 });
-  // var _getAll = function () {
-  //   return $localStorage.favourites
-  // };
-  // var _add = function (song) {
-  //   $localStorage.favourites.push(song);
-  // }
-  // var _remove = function (song) {
-  //   $localStorage.things.splice($localStorage.things.indexOf(song), 1);
-  // }
-  // return {
-  //     getAll: _getAll,
-  //     add: _add,
-  //     remove: _remove
-  //   };

@@ -1,15 +1,16 @@
-<ion-view  >
+<ion-view  view-title="">
   <ion-nav-buttons side="left">
 
-    <label class="item item-input ">
-      <input type="text" placeholder="Search" ng-model="$parent.searchText">
+    <label style="border-radius: 10px;" class="item item-input ">
+      <input type="text"  placeholder="Search" ng-model="$parent.searchText">
 </label>
 
        <!-- <input type="text" placeholder="Search" ng-model="searchText"> -->
    </ion-nav-buttons>
 
   <ion-content>
-    <ion-list>
+    <ion-spinner  class="spinner-calm" ng-show="loading"></ion-spinner>
+    <ion-list ng-show="!loading">
       <ion-item class="item-remove-animate  " ng-repeat="hymn in hymns | filter:searchText | limitTo:25" type="item-text-wrap" href="#/tab/song/{{hymn.title}}">
           <!-- <i class="icon ion-ios-musical-notes calm"></i> -->
         {{hymn.song}}
