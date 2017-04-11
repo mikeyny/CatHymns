@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
   $scope.getfavs = function(){
     $scope.favourites = FavouritesService.getAll();
   };
-  $scope.loading = true;
+  $scope.loading = true; // enabling the spinner
   $rootScope.$on("UpdateSongs", function(){
         $scope.getSongs();
         console.log("updated")
@@ -12,18 +12,17 @@ angular.module('starter.controllers', [])
   $scope.getSongs = function() {
         $scope.getfavs();
         $scope.songs = songAPIservice.getSongs(LanguageService.getlang()) ;
-
        };
   $rootScope.$on('loading:finish', function (){
     $scope.getSongs();
     $timeout(function(){
                $scope.loading = false;
-             }, 5000);
+             }, 5000); // turn off the spinner after all data has been rendered
   });
 
 
   $scope.toggleSelect = function(letter) {
-    $scope.shownLetter = ($scope.isLetterShown(letter)) ? null:letter ;
+    $scope.shownLetter = ($scope.isLetterShown(letter)) ? null:letter ; //selecting different letters on the accordion
     };
   $scope.isLetterShown = function(letter) {
     return $scope.shownLetter === letter;
@@ -32,11 +31,12 @@ angular.module('starter.controllers', [])
    return FavouritesService.find(song);
   };
   $scope.addToFavs = function (song) {
-   $scope.isSongLiked(song) ?   FavouritesService.remove(song): FavouritesService.add(song);
+   $scope.isSongLiked(song) ?   FavouritesService.remove(song): FavouritesService.add(song); //adding song to favourites
    $scope.getfavs();
   };
 })
 
+// most stuff that shows up when u click the option button
 .controller('aboutCtrl', function($scope, $rootScope ,$ionicPopover ,$ionicPopup, $timeout ,ClosePopupService , LanguageService) {
   $ionicPopover.fromTemplateUrl('templates/options-popover.html', {
       scope: $scope
@@ -59,7 +59,6 @@ angular.module('starter.controllers', [])
       });
 
       ClosePopupService.register(aboutPopup);
-
 
     } ;
   $scope.showCredits = function() {
@@ -94,6 +93,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('SongCtrl', function($scope,$rootScope , $stateParams, songAPIservice ,LanguageService) {
+  // responsible for loading songs
   $rootScope.$on("UpdateSongs", function(){
        $scope.changeSongs();
 
@@ -106,13 +106,12 @@ angular.module('starter.controllers', [])
         var songs = data[$scope.title[0].toUpperCase()] ;
         $scope.song = songs.filter(item=>item.title==$scope.title)[0] ;
           console.log($scope.song);
-
-
   }
   $scope.changeSongs();
 
 })
 .controller('VersesCtrl', function($scope,$stateParams, songAPIservice) {
+  // responsible for liturgical reading
   songAPIservice.getReading().success(function(data){
       $scope.readings = data ;
       var date= $stateParams.id;
@@ -122,7 +121,6 @@ angular.module('starter.controllers', [])
       $scope.weekreading = data[$scope.month][$scope.week-1];
     });
   $scope.monthIndex =  function(month){
-
       return Object.keys($scope.readings).indexOf(month)+1 ;
   }
   $scope.weekIndex = function(month ,week){
@@ -134,7 +132,6 @@ angular.module('starter.controllers', [])
       $scope.readings = data ;
     });
   $scope.monthIndex =  function(month){
-
       return Object.keys($scope.readings).indexOf(month)+1 ;
   }
   $scope.weekIndex = function(month ,week){
@@ -142,6 +139,7 @@ angular.module('starter.controllers', [])
   }
 })
 .controller('searchCtrl', function($scope, songAPIservice ,FavouritesService , LanguageService , $rootScope) {
+  // responsible for searching through the songs
     $scope.loading = true;
     $scope.getSearchableSongs = function(){
       songAPIservice.getSearchableSongs(LanguageService.getlang()).success(function(data){

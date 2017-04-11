@@ -1,5 +1,6 @@
 angular.module('starter.services', [])
 
+// SongApI services ,responsible for getting the songs
 .factory('songAPIservice',['$http', function($http){
     var songAPI ={};
     var songs ={};
@@ -21,27 +22,32 @@ angular.module('starter.services', [])
     return songAPI;
   }])
 
+// Responsible for storing and deleting favourated songs
   .factory ('FavouritesService',['$localStorage', function ($localStorage) {
-    var storage = $localStorage.$default({
+      var storage = $localStorage.$default({
         favourites: []  });
-        var favAPI={};
-        favAPI.getAll = function () {
+      var favAPI={};
+
+      favAPI.getAll = function () {
           return storage.favourites;
         };
-        favAPI.add = function (song) {
 
+      favAPI.add = function (song) {
           storage.favourites.push(song);
         };
-        favAPI.find = function(song){
+
+      favAPI.find = function(song){
           return storage.favourites.filter((item)=>(item.aurthor==song.aurthor && item.title==song.title)).length>0;
         };
-        favAPI.remove = function (song) {
+
+      favAPI.remove = function (song) {
           storage.favourites.splice(storage.favourites.indexOf(storage.favourites.filter((item)=>(item.aurthor==song.aurthor && item.title==song.title))[0]), 1);
         };
-        return favAPI ;
 
-
+      return favAPI ;
   }])
+
+  // responsible for setting and getting the language
   .factory ('LanguageService',['$localStorage', function ($localStorage) {
     var storage = $localStorage.$default({
         language: ["Shona"]  });
@@ -58,6 +64,7 @@ angular.module('starter.services', [])
 
   }])
 
+// intercepting http requests
 .factory('httpInterceptor', function ($q, $rootScope) {
           var loadingCount = 0;
 
@@ -79,6 +86,7 @@ angular.module('starter.services', [])
           };
       })
 
+// closepopup service (https://github.com/mvidailhet/ionic-close-popup)
   .factory('ClosePopupService', function($document, $ionicPopup, $timeout){
   var lastPopup;
   return {
